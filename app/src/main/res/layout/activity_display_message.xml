@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
@@ -8,5 +7,15 @@
         android:id="@+id/display_message_from_mainActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edit_message"
+        android:layout_height="35dp"
+        android:layout_width="1dp"
+        android:layout_weight="1"
+        android:hint="@string/edit_message"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/black_cursor"
+        android:background="@drawable/rounded_edittext" />
 
 </LinearLayout>
