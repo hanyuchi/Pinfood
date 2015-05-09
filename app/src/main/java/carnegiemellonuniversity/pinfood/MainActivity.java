@@ -18,11 +18,8 @@ import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.google.android.gms.location.places.Place;
-
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends Activity{
