@@ -11,6 +11,6 @@ public class QuickSearchActivity extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_display_message, container, false);
+        return inflater.inflate(R.layout.quick_search_activity, container, false);
     }
 }

@@ -94,11 +94,14 @@ public class MainActivity extends Activity{
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //System.out.println(query);
                 hideSoftKeyboard(MainActivity.this);
                 //searchView.clearFocus();//hide keyboard after searching
 
-                Uri webpage = Uri.parse("https://www.google.com/maps/search/"+query);
+                String uri = "https://www.google.com/maps/search/" + query +"/@"
+                        + DropPinOnMapActivity.lati + ","
+                        + DropPinOnMapActivity.longi + "z?hl=en";
+                System.out.println(uri);
+                Uri webpage = Uri.parse(uri);
                 Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
 
                 //check app available for searching
