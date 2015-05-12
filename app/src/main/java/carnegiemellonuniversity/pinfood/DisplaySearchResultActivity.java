@@ -1,6 +1,5 @@
 package carnegiemellonuniversity.pinfood;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -20,37 +18,16 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class MainActivity extends Activity{
-    protected static double lati;
-    protected static double longi;
-    protected static boolean goBackFromDropPinFragment;
 
+public class DisplaySearchResultActivity extends Activity {
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle("lalalaaa");
-        //setContentView(R.layout.main);
+        setContentView(R.layout.display_search_result_activity);
 
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        String tag1 = "Quick Search";
-        String tag2 = "Drop Pin on Map";
-        TabListener<QuickSearchActivity> tl1 = new TabListener<QuickSearchActivity>(this,
-                tag1, QuickSearchActivity.class);
-        TabListener<DropPinOnMapActivity> tl2 = new TabListener<DropPinOnMapActivity>(this,
-                tag2, DropPinOnMapActivity.class);
-
-        actionBar.addTab(actionBar.newTab()
-                .setText(tag1)
-                .setTabListener(tl1));
-        actionBar.addTab(actionBar.newTab()
-                .setText(tag2)
-                .setTabListener(tl2));
-
-        if(MainActivity.goBackFromDropPinFragment){
-            getActionBar().setSelectedNavigationItem(1);
-            MainActivity.goBackFromDropPinFragment = false;
-        }
+        TextView test1 = (TextView) findViewById(R.id.display_search_result);
+        test1.setText(getIntent().getStringExtra("latitude"));
     }
 
     @Override
@@ -100,12 +77,12 @@ public class MainActivity extends Activity{
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                hideSoftKeyboard(MainActivity.this);
-                //searchView.clearFocus();//hide keyboard after searching
+                //hideSoftKeyboard(DisplaySearchResultActivity.this);
+                searchView.clearFocus();//hide keyboard after searching
 
                 /* Set up online search */
                 String uri = "https://www.google.com/maps/search/" + query +"/@"
-                        + lati + "," + longi + "z?hl=en";
+                        + MainActivity.lati + "," + MainActivity.longi + "z?hl=en";
                 System.out.println(uri);
                 Uri webpage = Uri.parse(uri);
                 Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
@@ -166,11 +143,5 @@ public class MainActivity extends Activity{
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)
-                activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

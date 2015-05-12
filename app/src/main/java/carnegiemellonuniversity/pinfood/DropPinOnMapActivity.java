@@ -5,8 +5,13 @@ import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.InflateException;
@@ -17,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,9 +48,6 @@ public class DropPinOnMapActivity extends Fragment
         OnMyLocationButtonClickListener,
         OnMapReadyCallback{
 
-    public static double lati;
-    public static double longi;
-
     private boolean focused;
     private static View view;
     private GoogleMap mMap;
@@ -60,6 +63,41 @@ public class DropPinOnMapActivity extends Fragment
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getActivity().getSystemService(getActivity().
+                        getApplicationContext().CONNECTIVITY_SERVICE);
+        NetworkInfo network = connectivityManager.getActiveNetworkInfo();
+
+        if(network == null){
+            AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+            alert.setCancelable(false);
+
+            alert.setMessage("This function needs your Internet access."
+                    + " Change your settings?");
+
+            alert.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                    new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+                    getActivity().finish();
+                    MainActivity.goBackFromDropPinFragment = true;
+                }
+            });
+
+            alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Ignore",
+                    new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent().
+                            setClass(getActivity().getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+            });
+
+            alert.show();
+        }
+
         if (view != null) {
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null)
@@ -86,7 +124,6 @@ public class DropPinOnMapActivity extends Fragment
         });
 
         /* GET CURRENT LOCATION */
-        updateMyLocation();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -101,11 +138,13 @@ public class DropPinOnMapActivity extends Fragment
 
     @Override
     public void onMapReady(GoogleMap map) {
-        mMap = map;
-        updateTraffic();
-        updateMyLocation();
-        map.setMyLocationEnabled(true);
-        map.setOnMyLocationButtonClickListener(this);
+        if(mMap == null) {
+            mMap = map;
+            updateTraffic();
+            updateMyLocation();
+            map.setMyLocationEnabled(true);
+            map.setOnMyLocationButtonClickListener(this);
+        }
     }
 
     private boolean checkReady() {
@@ -127,7 +166,6 @@ public class DropPinOnMapActivity extends Fragment
         if (!checkReady()) {
             return;
         }
-        mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setBuildingsEnabled(true);
         mMap.setIndoorEnabled(true);
@@ -164,6 +202,12 @@ public class DropPinOnMapActivity extends Fragment
     /*
      * get my location
      */
+    private void cameraFocused(){
+        LatLng ll = new LatLng(MainActivity.lati, MainActivity.longi);
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 15);
+        mMap.animateCamera(update);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -181,14 +225,14 @@ public class DropPinOnMapActivity extends Fragment
      */
     @Override
     public void onLocationChanged(Location location) {
-        if(mGoogleApiClient.isConnected() && !focused) {
-            lati = location.getLatitude();
-            longi = location.getLongitude();
-
-            LatLng ll = new LatLng(lati,longi);
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 15);
-            mMap.animateCamera(update);
-            focused = true;
+        if(mGoogleApiClient.isConnected()) {
+            MainActivity.lati = location.getLatitude();
+            MainActivity.longi = location.getLongitude();
+            //Toast.makeText(getActivity().getApplicationContext(), "focus true"+MainActivity.longi, Toast.LENGTH_SHORT).show();
+            if(!focused) {
+                cameraFocused();
+                focused = true;
+            }
         }
     }
 
@@ -223,10 +267,10 @@ public class DropPinOnMapActivity extends Fragment
     public boolean onMyLocationButtonClick() {
         if (mGoogleApiClient.isConnected()) {
             //Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            //String msg = lati + " " + longi;
+            //String msg = MainActivity.lati + " " + MainActivity.longi;
             //Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
-            LatLng ll = new LatLng(lati,longi);
+            LatLng ll = new LatLng(MainActivity.lati, MainActivity.longi);
             CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 16);
             mMap.animateCamera(update);
             return true;

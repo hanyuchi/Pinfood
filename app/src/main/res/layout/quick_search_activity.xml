@@ -1,21 +1,41 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/display_message_from_mainActivity"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:paddingLeft="15dp"
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_message"
+            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:hint="@string/edit_message"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/black_cursor"
+            android:background="@drawable/rounded_edittext"
+            android:numeric="integer"
+            android:maxLength="3"/>
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="@string/mile"
+            android:textSize="20sp"/>
+    </LinearLayout>
+    
+    <Button
+        android:id="@+id/search_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/edit_message"
-        android:layout_height="35dp"
-        android:layout_width="1dp"
-        android:layout_weight="1"
-        android:hint="@string/edit_message"
-        android:singleLine="true"
-        android:textCursorDrawable="@drawable/black_cursor"
-        android:background="@drawable/rounded_edittext" />
+        android:layout_height="40dp"
+        android:text="@string/search"/>
 
 </LinearLayout>
