@@ -14,7 +14,6 @@ import android.view.Window;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class LauncherActivity extends Activity {
 
     @Override
