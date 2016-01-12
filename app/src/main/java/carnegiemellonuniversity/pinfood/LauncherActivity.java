@@ -9,11 +9,9 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
 
 public class LauncherActivity extends Activity {
 
