@@ -15,7 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class WelcomePageActivity extends Activity {
+public class LauncherActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
