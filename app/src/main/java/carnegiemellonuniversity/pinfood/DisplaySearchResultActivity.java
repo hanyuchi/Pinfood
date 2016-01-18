@@ -24,9 +24,6 @@ public class DisplaySearchResultActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_search_result_activity);
-
-        TextView test1 = (TextView) findViewById(R.id.display_search_result);
-        test1.setText(getIntent().getStringExtra("latitude"));
     }
 
     @Override

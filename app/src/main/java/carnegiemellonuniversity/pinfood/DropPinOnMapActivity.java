@@ -131,7 +131,9 @@ public class DropPinOnMapActivity extends Fragment
                 .build();
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
         return view;
     }
@@ -203,6 +205,10 @@ public class DropPinOnMapActivity extends Fragment
      * get my location
      */
     private void cameraFocused(){
+        if (mMap == null) {
+            return;
+        }
+
         LatLng ll = new LatLng(MainActivity.lati, MainActivity.longi);
         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 15);
         mMap.animateCamera(update);

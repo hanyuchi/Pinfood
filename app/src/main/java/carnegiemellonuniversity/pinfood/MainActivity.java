@@ -20,6 +20,8 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import rx.Observable;
+
 public class MainActivity extends Activity{
     protected static double lati;
     protected static double longi;
@@ -27,8 +29,7 @@ public class MainActivity extends Activity{
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle("lalalaaa");
-        //setContentView(R.layout.main);
+        setContentView(R.layout.main);
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
