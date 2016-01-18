@@ -18,8 +18,12 @@ public class LauncherActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.welcome_page_activity);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         if(MainActivity.goBackFromDropPinFragment){
             Intent intent = new Intent().setClass(getApplicationContext(), MainActivity.class);
@@ -40,21 +44,21 @@ public class LauncherActivity extends Activity {
 
             alert.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                     new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
-                    finish();
-                }
-            });
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+                            finish();
+                        }
+                    });
 
             alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Ignore",
                     new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent().
-                            setClass(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            });
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent().
+                                    setClass(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
 
             alert.show();
         }else{
